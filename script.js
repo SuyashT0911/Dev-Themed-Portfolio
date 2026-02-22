@@ -340,14 +340,16 @@ if (grid) {
 
     async function fetchContributions() {
         try {
-            // Use github-contributions-api (free, no token needed)
+            // Cache-bust with timestamp so browser never serves stale data
+            const bust = Date.now();
             const res = await fetch(
-                `https://github-contributions-api.jogruber.de/v4/${GITHUB_USERNAME}?y=last`
+                `https://github-contributions-api.jogruber.de/v4/${GITHUB_USERNAME}?y=last&_t=${bust}`,
+                { cache: 'no-store' }   // bypass browser cache entirely
             );
             if (!res.ok) throw new Error('API error');
             const data = await res.json();
 
-            // This API returns { total: {...}, contributions: [{date, count, level}] }
+            // API returns { total: {...}, contributions: [{date, count, level}] }
             if (data.contributions && data.contributions.length > 0) {
                 grid.innerHTML = '';
                 data.contributions.forEach(day => {
@@ -361,12 +363,15 @@ if (grid) {
                     grid.appendChild(el);
                 });
 
-                // Update total count
+                // Update total count with smooth animated number roll
                 const countEl = document.querySelector('.gh-count');
                 if (countEl) {
                     const total = data.contributions.reduce((sum, d) => sum + d.count, 0);
-                    countEl.textContent = `${total} contributions in the last year · github.com/${GITHUB_USERNAME}`;
+                    animateCount(countEl, total, GITHUB_USERNAME);
                 }
+
+                // Re-run sizer after grid is rebuilt
+                sizeContribCells();
             } else {
                 renderFallback();
             }
@@ -376,8 +381,32 @@ if (grid) {
         }
     }
 
-    // Fetch real contributions, then resize
-    fetchContributions().then(() => sizeContribCells());
+    // Smooth number roll animation for the count label
+    function animateCount(el, targetTotal, username) {
+        const prefix = ``;
+        const suffix = ` contributions in the last year · github.com/${username}`;
+        const start  = parseInt(el.dataset.count || '0', 10);
+        const diff   = targetTotal - start;
+        const steps  = 30;
+        let   step   = 0;
+        el.dataset.count = targetTotal;
+        clearInterval(el._countTimer);
+        el._countTimer = setInterval(() => {
+            step++;
+            const current = Math.round(start + (diff * step / steps));
+            el.textContent = prefix + current + suffix;
+            if (step >= steps) {
+                clearInterval(el._countTimer);
+                el.textContent = prefix + targetTotal + suffix;
+            }
+        }, 30);
+    }
+
+    // Initial fetch
+    fetchContributions();
+
+    // Auto-refresh every 5 minutes — keeps count live without page reload
+    setInterval(fetchContributions, 5 * 60 * 1000);
 }
 
 /* ------------------------------------------
