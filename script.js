@@ -376,9 +376,35 @@ if (grid) {
         }
     }
 
-    // Fetch real contributions
-    fetchContributions();
+    // Fetch real contributions, then resize
+    fetchContributions().then(() => sizeContribCells());
 }
+
+/* ------------------------------------------
+   8b. CONTRIB GRID — Dynamic Square Sizer
+   ------------------------------------------ */
+function sizeContribCells() {
+    const wrapper = document.querySelector('.contrib-scroll-wrapper');
+    if (!wrapper) return;
+
+    const WEEKS   = 52;
+    const GAP     = 3;
+    const MIN_CELL = 11; // px — smallest usable cell on mobile
+
+    // How wide is the scroll area (excluding padding)?
+    const available = wrapper.clientWidth - 2;
+    // Calculate cell size so 52 columns exactly fill the width
+    const computed = Math.floor((available - (WEEKS - 1) * GAP) / WEEKS);
+    const cell = Math.max(computed, MIN_CELL);
+
+    // Apply via CSS variable — both grid-template-rows and grid-auto-columns use it
+    document.documentElement.style.setProperty('--contrib-cell', cell + 'px');
+}
+
+// Re-calculate on window resize (e.g. rotating phone, resizing desktop)
+window.addEventListener('resize', sizeContribCells);
+// Also run once on DOM ready in case grid is already rendered
+document.addEventListener('DOMContentLoaded', sizeContribCells);
 
 
 /* ------------------------------------------

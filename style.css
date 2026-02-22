@@ -1154,16 +1154,15 @@ section {
 
 .contrib-grid {
   display: grid;
-  /* 7 rows, auto columns — fills to container width on desktop */
-  grid-template-rows: repeat(7, 1fr);
+  grid-template-rows: repeat(7, var(--contrib-cell, 13px));
   grid-auto-flow: column;
+  grid-auto-columns: var(--contrib-cell, 13px);
   gap: 3px;
-  min-width: 100%;     /* stretch to fill container on desktop */
-  min-height: 104px;   /* ensure visible height */
+  width: max-content; /* JS controls cell size; wrapper handles scroll */
 }
 .contrib-day {
-  min-width: 10px;
-  min-height: 10px;
+  width: var(--contrib-cell, 13px);
+  height: var(--contrib-cell, 13px);
   border-radius: 2px;
   transition: transform var(--t-fast), outline 0.1s ease;
   cursor: pointer;
