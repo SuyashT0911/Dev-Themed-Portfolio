@@ -1162,11 +1162,11 @@ section {
   background: linear-gradient(90deg, #4fe07a, #39d353);
 }
 
-/* ── Swipe hint (visible until user scrolls) ── */
+/* ── Sync countdown hint (always visible, very subtle) ── */
 .contrib-swipe-hint {
-  display: none;           /* JS shows it only on touch/small screens */
+  display: block;           /* always visible — both desktop & mobile */
   text-align: center;
-  margin-top: 8px;
+  margin-top: 6px;
   opacity: 1;
   transition: opacity 0.5s ease;
 }
@@ -1176,9 +1176,9 @@ section {
 }
 .contrib-swipe-hint span {
   font-family: var(--font-code);
-  font-size: 0.72rem;
-  color: var(--text-dim);
-  letter-spacing: 0.04em;
+  font-size: 0.65rem;
+  color: rgba(139, 148, 158, 0.45);   /* very dim grey — barely noticeable */
+  letter-spacing: 0.06em;
 }
 
 .contrib-grid {

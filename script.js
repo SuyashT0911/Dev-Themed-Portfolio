@@ -467,29 +467,36 @@ document.addEventListener('DOMContentLoaded', sizeContribCells);
         thumb.style.left  = (thumbLeftPct  * 100).toFixed(2) + '%';
     }
 
-    // Show swipe hint only on touch/narrow screens
-    function checkHint() {
-        if (hint && window.matchMedia('(hover: none), (max-width: 900px)').matches) {
-            if (wrapper.scrollWidth > wrapper.clientWidth) {
-                hint.style.display = 'block';
-            }
-        }
+    // Live countdown timer — shows "syncs in 4:59" etc.
+    const REFRESH_MS = 5 * 60 * 1000; // 5 minutes = 300 000 ms
+    let syncLabel = document.getElementById('contrib-sync-label');
+    let nextSyncAt = Date.now() + REFRESH_MS;
+
+    function updateSyncLabel() {
+        if (!syncLabel) return;
+        const remaining = Math.max(0, nextSyncAt - Date.now());
+        const mins = Math.floor(remaining / 60000);
+        const secs = Math.floor((remaining % 60000) / 1000);
+        syncLabel.textContent = `syncs in ${mins}:${String(secs).padStart(2, '0')}`;
     }
 
-    // Hide hint after first scroll
-    wrapper.addEventListener('scroll', () => {
-        updateThumb();
-        if (hint && !hint.classList.contains('hidden')) {
-            hint.classList.add('hidden');
-        }
-    }, { passive: true });
+    // Tick every second
+    updateSyncLabel();
+    setInterval(updateSyncLabel, 1000);
 
-    // Initial state
+    // After each fetch, reset the countdown
+    function resetSyncTimer() {
+        nextSyncAt = Date.now() + REFRESH_MS;
+    }
+
+    // Scroll listener — just update thumb, no hiding the hint anymore
+    wrapper.addEventListener('scroll', updateThumb, { passive: true });
+
+    // Initial thumb state
     updateThumb();
-    checkHint();
 
     // Re-run after data loads and on resize
-    window.addEventListener('resize', () => { updateThumb(); checkHint(); });
+    window.addEventListener('resize', updateThumb);
     // Observe wrapper size changes (e.g. font loading shifts layout)
     if (window.ResizeObserver) {
         new ResizeObserver(updateThumb).observe(wrapper);
