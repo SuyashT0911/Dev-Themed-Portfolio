@@ -265,6 +265,57 @@ body.cursor-hover #cursor-follower {
 }
 
 /* ============================================
+   TOUCH CURSOR (Mobile finger tracker)
+   ============================================ */
+#touch-cursor {
+  display: none; /* hidden by default — JS shows it on touch */
+  width: 20px;
+  height: 20px;
+  background: rgba(57, 211, 83, 0.5);
+  border-radius: 50%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  transform: translate(-50%, -50%) scale(0);
+  pointer-events: none;
+  z-index: 9999;
+  box-shadow:
+    0 0 0 0 rgba(57, 211, 83, 0.4),
+    0 0 12px 4px rgba(57, 211, 83, 0.3);
+  transition:
+    transform 0.12s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.2s ease;
+  opacity: 0;
+}
+#touch-cursor.active {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+  animation: touchPulse 1.5s ease-in-out infinite;
+}
+#touch-cursor.releasing {
+  transform: translate(-50%, -50%) scale(1.8);
+  opacity: 0;
+}
+@keyframes touchPulse {
+  0%, 100% {
+    box-shadow:
+      0 0 0 0 rgba(57, 211, 83, 0.5),
+      0 0 12px 4px rgba(57, 211, 83, 0.2);
+  }
+  50% {
+    box-shadow:
+      0 0 0 12px rgba(57, 211, 83, 0),
+      0 0 20px 8px rgba(57, 211, 83, 0.3);
+  }
+}
+/* Only show on touch devices */
+@media (hover: none) and (pointer: coarse) {
+  #touch-cursor { display: block; }
+  /* Hide desktop cursor on pure touch devices */
+  #cursor, #cursor-follower { display: none; }
+}
+
+/* ============================================
    NAVIGATION
    ============================================ */
 #nav {

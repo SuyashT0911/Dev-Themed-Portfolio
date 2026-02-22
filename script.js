@@ -155,6 +155,46 @@ document.querySelectorAll('a, button, .pill, .proj-link-btn, .contrib-day, .soci
 
 
 /* ------------------------------------------
+   3b. TOUCH CURSOR — Mobile finger tracker
+   ------------------------------------------ */
+const touchCursor = document.getElementById('touch-cursor');
+if (touchCursor) {
+    let touchActive = false;
+
+    function moveTouchCursor(x, y) {
+        touchCursor.style.left = x + 'px';
+        touchCursor.style.top  = y + 'px';
+    }
+
+    window.addEventListener('touchstart', (e) => {
+        const t = e.touches[0];
+        moveTouchCursor(t.clientX, t.clientY);
+        touchCursor.classList.remove('releasing');
+        touchCursor.classList.add('active');
+        touchActive = true;
+    }, { passive: true });
+
+    window.addEventListener('touchmove', (e) => {
+        if (!touchActive) return;
+        const t = e.touches[0];
+        moveTouchCursor(t.clientX, t.clientY);
+    }, { passive: true });
+
+    window.addEventListener('touchend', () => {
+        touchActive = false;
+        touchCursor.classList.remove('active');
+        touchCursor.classList.add('releasing');
+        setTimeout(() => touchCursor.classList.remove('releasing'), 300);
+    }, { passive: true });
+
+    window.addEventListener('touchcancel', () => {
+        touchActive = false;
+        touchCursor.classList.remove('active', 'releasing');
+    }, { passive: true });
+}
+
+
+/* ------------------------------------------
    4. NAV — SCROLL EFFECT
    ------------------------------------------ */
 const nav = document.getElementById('nav');
