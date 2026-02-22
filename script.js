@@ -557,12 +557,12 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
 
 
 /* ------------------------------------------
-   12. CONTACT FORM FEEDBACK & MAIL OUT
+   12. CONTACT FORM FEEDBACK & MAIL OUT (Direct Send)
    ------------------------------------------ */
 const form      = document.getElementById('contact-form');
 const submitBtn = document.getElementById('form-submit');
 if (form) {
-    form.addEventListener('submit', e => {
+    form.addEventListener('submit', async e => {
         e.preventDefault();
         
         // 1. Get form values
@@ -571,29 +571,56 @@ if (form) {
         const subject = document.getElementById('f-subject').value.trim() || 'Portfolio Contact';
         const msg     = document.getElementById('f-msg').value.trim();
         
-        // 2. Build the mailto link
-        const bodyContent = `Name: ${name}\nEmail: ${email}\n\nMessage:\n${msg}`;
-        const mailtoURL   = `mailto:tiwarisuyash700@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyContent)}`;
-        
-        // 3. Open email client
-        window.location.href = mailtoURL;
-
-        // 4. Play success UI animation
+        // 2. Play sending UI animation
         const span = submitBtn.querySelector('span');
         const orig = span.textContent;
         submitBtn.disabled = true;
-        span.textContent   = 'opening_client()...';
+        span.textContent   = 'sending_data()...';
         
+        let isSuccess = false;
+
+        try {
+            // 3. Send email directly via FormSubmit.co AJAX API
+            const response = await fetch("https://formsubmit.co/ajax/tiwarisuyash700@gmail.com", {
+                method: "POST",
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    _subject: subject,
+                    name: name,
+                    email: email,
+                    message: msg,
+                    _captcha: "false" // Disable captcha for seamless UX
+                })
+            });
+
+            if (response.ok) {
+                // Success
+                isSuccess = true;
+                span.textContent            = '✓ message.sent()';
+                submitBtn.style.background  = '#4fe07a';
+            } else {
+                // API error
+                span.textContent            = 'x send.failed()';
+                submitBtn.style.background  = '#e04f4f';
+            }
+        } catch (error) {
+            // Network error
+            span.textContent            = 'x network.error()';
+            submitBtn.style.background  = '#e04f4f';
+        }
+
+        // 4. Reset form & button after delay
         setTimeout(() => {
-            span.textContent            = '✓ message.ready()';
-            submitBtn.style.background  = '#4fe07a';
-            setTimeout(() => {
-                span.textContent           = orig;
-                submitBtn.disabled         = false;
-                submitBtn.style.background = '';
-                form.reset();
-            }, 3000);
-        }, 1500);
+            span.textContent           = orig;
+            submitBtn.disabled         = false;
+            submitBtn.style.background = '';
+            if (isSuccess) {
+                 form.reset(); 
+            }
+        }, 3000);
     });
 }
 
