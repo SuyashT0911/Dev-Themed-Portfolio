@@ -580,8 +580,8 @@ if (form) {
         let isSuccess = false;
 
         try {
-            // 3. Send email directly via FormSubmit.co AJAX API
-            const response = await fetch("https://formsubmit.co/ajax/tiwarisuyash700@gmail.com", {
+            // 3. Send email directly via FormSubmit.co AJAX API (Using secured token)
+            const response = await fetch("https://formsubmit.co/ajax/b1823e53f051c23346b784c9f17b93d1", {
                 method: "POST",
                 headers: { 
                     'Content-Type': 'application/json',
