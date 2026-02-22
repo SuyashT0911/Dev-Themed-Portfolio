@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suyash Tiwari — Web Developer & MCA Student</title>
+    <meta name="description" content="Suyash Tiwari — MCA student at ASM IBMR Pune, aspiring Java & Web Developer. Passionate about building impactful web solutions.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="animations.css">
+</head>
+<body>
+
+    <!-- Terminal Preloader -->
+    <div id="preloader">
+        <div class="terminal-window preload-terminal">
+            <div class="terminal-bar">
+                <span class="tb-dot red"></span>
+                <span class="tb-dot yellow"></span>
+                <span class="tb-dot green"></span>
+                <span class="tb-title">bash — portfolio.sh</span>
+            </div>
+            <div class="terminal-body">
+                <div class="t-line"><span class="t-prompt">~/portfolio</span> <span class="t-cmd">$ node build.js</span></div>
+                <div class="t-line anim-delay-1"><span class="t-comment">// Compiling assets...</span></div>
+                <div class="t-line anim-delay-2"><span class="t-comment">// Bundling modules...</span></div>
+                <div class="t-line anim-delay-3"><span class="t-comment">// Injecting styles...</span></div>
+                <div class="t-line anim-delay-4 t-success">✓ Build complete. Launching...</div>
+                <div class="t-line"><span class="t-prompt">~/portfolio</span> <span id="preload-count" class="t-num">0%</span> <span class="t-cursor-block">▋</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Cursor -->
+    <div id="cursor"></div>
+    <div id="cursor-follower"></div>
+
+    <!-- Navigation -->
+    <nav id="nav">
+        <a href="#hero" class="nav-logo">
+            <span class="logo-bracket">&lt;</span>ST<span class="logo-slash">/</span><span class="logo-bracket">&gt;</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="#about" class="nav-item"><span class="nav-num">01.</span>About</a></li>
+            <li><a href="#stack" class="nav-item"><span class="nav-num">02.</span>Stack</a></li>
+            <li><a href="#work" class="nav-item"><span class="nav-num">03.</span>Projects</a></li>
+            <li><a href="#contact" class="nav-item"><span class="nav-num">04.</span>Contact</a></li>
+        </ul>
+        <a href="SUYASH TIWARI.pdf" class="nav-cta" download="Suyash_Tiwari_Resume.pdf">Resume <span class="ext-arrow">↓</span></a>
+    </nav>
+
+    <!-- ===== HERO ===== -->
+    <section id="hero">
+        <div class="hero-grid">
+            <!-- Left: Text -->
+            <div class="hero-text">
+                <div class="hero-greeting">
+                    <span class="t-green">const</span>&nbsp;<span class="t-blue">greeting</span>&nbsp;<span class="t-white">=</span>&nbsp;<span class="t-orange">"Hello, World!"</span><span class="t-white">;</span>
+                </div>
+                <h1 class="hero-name">Suyash<br>Tiwari.</h1>
+                <div class="hero-role-line">
+                    <span class="t-comment">// </span>
+                    <span class="hero-role-typed" id="typed-role"></span><span class="type-cursor">|</span>
+                </div>
+                <p class="hero-bio">MCA student at ASM IBMR Pune, passionate about building real-world web applications. I love turning ideas into clean, functional code — one project at a time.</p>
+                <div class="hero-cta-row">
+                    <a href="#work" class="btn-primary" id="btn-explore">
+                        <span>View Projects</span>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </a>
+                    <a href="#contact" class="btn-ghost">Hire Me</a>
+                </div>
+                <div class="hero-meta-row">
+                    <div class="hero-badge"><span class="badge-dot"></span>Open to work</div>
+                    <div class="hero-badge"><span class="badge-icon">🎓</span>MCA 2024–26</div>
+                    <div class="hero-badge"><span class="badge-icon">📍</span>Pune, India</div>
+                </div>
+            </div>
+
+            <!-- Right: IDE Code Window -->
+            <div class="hero-ide">
+                <div class="ide-window">
+                    <div class="ide-titlebar">
+                        <div class="ide-dots">
+                            <span class="ide-dot red"></span>
+                            <span class="ide-dot yellow"></span>
+                            <span class="ide-dot green"></span>
+                        </div>
+                        <div class="ide-tabs">
+                            <button class="ide-tab active" data-tab="portfolio" aria-label="portfolio.js tab">portfolio.js</button>
+                            <button class="ide-tab" data-tab="skills" aria-label="skills.json tab">skills.json</button>
+                            <button class="ide-tab" data-tab="style" aria-label="style.css tab">style.css</button>
+                        </div>
+                    </div>
+                    <!-- ide-body wraps sidebar + code SIDE BY SIDE -->
+                    <div class="ide-body">
+                        <div class="ide-sidebar" id="ide-sidebar">
+                            <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
+                            <span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+                            <span>11</span><span>12</span><span>13</span><span>14</span><span>15</span>
+                            <span>16</span><span>17</span><span>18</span><span>19</span><span>20</span>
+                        </div>
+                        <!-- Tab: portfolio.js -->
+                        <div class="ide-code ide-panel active" id="panel-portfolio">
+<pre><span class="t-comment">/**
+ * Portfolio – Suyash Tiwari
+ * Web Developer | MCA @ ASM IBMR
+ */</span>
+
+<span class="t-purple">class</span> <span class="t-yellow">Developer</span> <span class="t-white">{</span>
+  <span class="t-blue">constructor</span><span class="t-white">() {</span>
+    <span class="t-white">this.</span><span class="t-red">name</span>   <span class="t-white">=</span> <span class="t-orange">"Suyash Tiwari"</span><span class="t-white">;</span>
+    <span class="t-white">this.</span><span class="t-red">degree</span> <span class="t-white">=</span> <span class="t-orange">"MCA (2024–26)"</span><span class="t-white">;</span>
+    <span class="t-white">this.</span><span class="t-red">stack</span>  <span class="t-white">= [</span>
+      <span class="t-orange">"Java"</span><span class="t-white">,</span> <span class="t-orange">"JS"</span><span class="t-white">,</span>
+      <span class="t-orange">"PHP"</span><span class="t-white">,</span> <span class="t-orange">"Python"</span>
+    <span class="t-white">];</span>
+  <span class="t-white">}</span>
+
+  <span class="t-blue">hireable</span><span class="t-white">() {</span>
+    <span class="t-purple">return</span> <span class="t-green">true</span><span class="t-white">;</span>
+  <span class="t-white">}</span>
+<span class="t-white">}</span></pre>
+                        </div>
+                        <!-- Tab: skills.json -->
+                        <div class="ide-code ide-panel" id="panel-skills">
+<pre><span class="t-white">{</span>
+  <span class="t-blue">"languages"</span><span class="t-white">: [</span>
+    <span class="t-orange">"Java"</span><span class="t-white">,</span> <span class="t-orange">"JavaScript"</span><span class="t-white">,</span>
+    <span class="t-orange">"Python"</span><span class="t-white">,</span> <span class="t-orange">"PHP"</span><span class="t-white">,</span> <span class="t-orange">"C++"</span>
+  <span class="t-white">],</span>
+  <span class="t-blue">"web"</span><span class="t-white">: [</span>
+    <span class="t-orange">"HTML5"</span><span class="t-white">,</span> <span class="t-orange">"CSS3"</span><span class="t-white">,</span>
+    <span class="t-orange">"JavaScript"</span>
+  <span class="t-white">],</span>
+  <span class="t-blue">"tools"</span><span class="t-white">: [</span>
+    <span class="t-orange">"Git"</span><span class="t-white">,</span> <span class="t-orange">"VS Code"</span><span class="t-white">,</span>
+    <span class="t-orange">"Postman"</span>
+  <span class="t-white">],</span>
+  <span class="t-blue">"learning"</span><span class="t-white">: [</span>
+    <span class="t-orange">"Advanced Java"</span><span class="t-white">,</span>
+    <span class="t-orange">"Full-Stack"</span><span class="t-white">,</span> <span class="t-orange">"AI/ML"</span>
+  <span class="t-white">],</span>
+  <span class="t-blue">"available"</span><span class="t-white">:</span> <span class="t-green">true</span>
+<span class="t-white">}</span></pre>
+                        </div>
+                        <!-- Tab: style.css -->
+                        <div class="ide-code ide-panel" id="panel-style">
+<pre><span class="t-comment">/* Design System */</span>
+<span class="t-red">:root</span> <span class="t-white">{</span>
+  <span class="t-blue">--color-accent</span><span class="t-white">:</span> <span class="t-green">#39d353</span><span class="t-white">;</span>
+  <span class="t-blue">--font-code</span><span class="t-white">:</span> <span class="t-orange">'Fira Code'</span><span class="t-white">,</span> <span class="t-orange">mono</span><span class="t-white">;</span>
+  <span class="t-blue">--radius</span><span class="t-white">:</span> <span class="t-green">12px</span><span class="t-white">;</span>
+<span class="t-white">}</span>
+
+<span class="t-red">.hero-name</span> <span class="t-white">{</span>
+  <span class="t-blue">font-size</span><span class="t-white">:</span> <span class="t-orange">clamp</span><span class="t-white">(</span><span class="t-green">4rem</span><span class="t-white">,</span> <span class="t-green">8vw</span><span class="t-white">,</span> <span class="t-green">7rem</span><span class="t-white">);</span>
+  <span class="t-blue">font-weight</span><span class="t-white">:</span> <span class="t-green">900</span><span class="t-white">;</span>
+  <span class="t-blue">animation</span><span class="t-white">:</span> <span class="t-yellow">fadeUp</span> <span class="t-green">0.6s</span> <span class="t-orange">ease</span><span class="t-white">;</span>
+<span class="t-white">}</span>
+
+<span class="t-red">@keyframes</span> <span class="t-yellow">fadeUp</span> <span class="t-white">{</span>
+  <span class="t-blue">from</span> <span class="t-white">{</span> <span class="t-blue">transform</span><span class="t-white">:</span> <span class="t-orange">translateY</span><span class="t-white">(</span><span class="t-green">24px</span><span class="t-white">); }</span>
+  <span class="t-blue">to</span>   <span class="t-white">{</span> <span class="t-blue">transform</span><span class="t-white">:</span> <span class="t-orange">translateY</span><span class="t-white">(</span><span class="t-green">0</span><span class="t-white">); }</span>
+<span class="t-white">}</span></pre>
+                        </div>
+                    </div><!-- /ide-body -->
+                </div>
+                <!-- Floating stat bubbles -->
+                <div class="stat-bubble sb1">
+                    <span class="sb-num">3+</span>
+                    <span class="sb-label">Projects Built</span>
+                </div>
+                <div class="stat-bubble sb2">
+                    <span class="sb-num">7.5</span>
+                    <span class="sb-label">CGPA (BBA-CA)</span>
+                </div>
+                <div class="stat-bubble sb3">
+                    <span class="sb-num">2026</span>
+                    <span class="sb-label">MCA Batch</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scroll hint -->
+        <div class="hero-scroll">
+            <div class="scroll-wheel"></div>
+            <span>scroll down</span>
+        </div>
+    </section>
+
+    <!-- ===== MARQUEE TECH ===== -->
+    <div class="ticker">
+        <div class="ticker-track">
+            <span>HTML5</span><span class="tick-sep">·</span>
+            <span>CSS3</span><span class="tick-sep">·</span>
+            <span>React</span><span class="tick-sep">·</span>
+            <span>TypeScript</span><span class="tick-sep">·</span>
+            <span>Next.js</span><span class="tick-sep">·</span>
+            <span>Tailwind</span><span class="tick-sep">·</span>
+            <span>GSAP</span><span class="tick-sep">·</span>
+            <span>Figma</span><span class="tick-sep">·</span>
+            <span>Node.js</span><span class="tick-sep">·</span>
+            <span>Python</span><span class="tick-sep">·</span>
+            <span>PostgreSQL</span><span class="tick-sep">·</span>
+            <span>Docker</span><span class="tick-sep">·</span>
+            <span>AWS</span><span class="tick-sep">·</span>
+            <span>GraphQL</span><span class="tick-sep">·</span>
+            <span>Three.js</span><span class="tick-sep">·</span>
+            <span>Framer Motion</span><span class="tick-sep">·</span>
+            <span>HTML5</span><span class="tick-sep">·</span>
+            <span>CSS3</span><span class="tick-sep">·</span>
+            <span>React</span><span class="tick-sep">·</span>
+            <span>TypeScript</span><span class="tick-sep">·</span>
+            <span>Next.js</span><span class="tick-sep">·</span>
+            <span>Tailwind</span><span class="tick-sep">·</span>
+            <span>GSAP</span><span class="tick-sep">·</span>
+            <span>Figma</span><span class="tick-sep">·</span>
+        </div>
+    </div>
+
+    <!-- ===== ABOUT ===== -->
+    <section id="about">
+        <div class="section-label"><span class="t-num">01.</span> About Me</div>
+        <div class="about-grid">
+            <div class="about-left reveal">
+                <h2 class="section-heading">Where <span class="hl">code</span> meets <span class="hl">design.</span></h2>
+                <p class="about-p">I'm a fresh Computer Science graduate with a deep passion for web development and coding. I've spent my college years building projects, learning modern frameworks, and obsessing over clean design &mdash; all self-driven, all because I love it.</p>
+                <p class="about-p">From hand-crafting CSS animations and responsive layouts, to building REST APIs and connecting databases &mdash; I'm always learning, always shipping, and always excited about what gets built next.</p>
+                <div class="about-tags">
+                    <span>UI / UX Design</span>
+                    <span>Web Animations</span>
+                    <span>Performance Nerd</span>
+                    <span>API Architect</span>
+                    <span>Open Source Lover</span>
+                    <span>Accessibility First</span>
+                </div>
+            </div>
+            <div class="about-right reveal">
+                <!-- Terminal About Card -->
+                <div class="terminal-window">
+                    <div class="terminal-bar">
+                        <span class="tb-dot red"></span>
+                        <span class="tb-dot yellow"></span>
+                        <span class="tb-dot green"></span>
+                        <span class="tb-title">zsh — about.sh</span>
+                    </div>
+                    <div class="terminal-body">
+                        <div class="t-line"><span class="t-prompt">~</span> <span class="t-cmd">cat about.json</span></div>
+                        <br>
+                        <div class="t-line t-white">{</div>
+                        <div class="t-line">&nbsp;&nbsp;<span class="t-blue">"name"</span>: <span class="t-orange">"Suyash Tiwari"</span>,</div>
+                        <div class="t-line">&nbsp;&nbsp;<span class="t-blue">"age"</span>: <span class="t-green">23</span>,</div>
+                        <div class="t-line">&nbsp;&nbsp;<span class="t-blue">"location"</span>: <span class="t-orange">"Pune, Maharashtra 🇮�"</span>,</div>
+                        <div class="t-line">&nbsp;&nbsp;<span class="t-blue">"degree"</span>: <span class="t-orange">"MCA @ ASM IBMR (2024–26)"</span>,</div>
+                        <div class="t-line">&nbsp;&nbsp;<span class="t-blue">"prev_degree"</span>: <span class="t-orange">"BBA-CA, CGPA 7.5"</span>,</div>
+                        <div class="t-line">&nbsp;&nbsp;<span class="t-blue">"available"</span>: <span class="t-green">true</span>,</div>
+                        <div class="t-line">&nbsp;&nbsp;<span class="t-blue">"hobbies"</span>: [</div>
+                        <div class="t-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-orange">"Building web apps"</span>,</div>
+                        <div class="t-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-orange">"Exploring AI/ML"</span>,</div>
+                        <div class="t-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-orange">"Open Source"</span></div>
+                        <div class="t-line">&nbsp;&nbsp;]</div>
+                        <div class="t-line t-white">}</div>
+                        <br>
+                        <div class="t-line"><span class="t-prompt">~</span> <span class="t-cursor-block">▋</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== TECH STACK ===== -->
+    <section id="stack">
+        <div class="section-label"><span class="t-num">02.</span> Tech Stack</div>
+        <h2 class="section-heading reveal">Tools I wield <span class="hl">every day.</span></h2>
+        <div class="stack-categories">
+            <div class="stack-cat reveal">
+                <div class="cat-title"><span class="cat-icon">🌐</span> Web Technologies</div>
+                <div class="stack-pills">
+                    <div class="pill"><span class="pill-dot" style="background:#E34F26"></span>HTML5</div>
+                    <div class="pill"><span class="pill-dot" style="background:#1572B6"></span>CSS3</div>
+                    <div class="pill"><span class="pill-dot" style="background:#F7DF1E"></span>JavaScript</div>
+                    <div class="pill"><span class="pill-dot" style="background:#777BB4"></span>PHP</div>
+                    <div class="pill"><span class="pill-dot" style="background:#4479A1"></span>MySQL</div>
+                    <div class="pill"><span class="pill-dot" style="background:#F05032"></span>Git</div>
+                </div>
+            </div>
+            <div class="stack-cat reveal">
+                <div class="cat-title"><span class="cat-icon">☕</span> Programming Languages</div>
+                <div class="stack-pills">
+                    <div class="pill"><span class="pill-dot" style="background:#ED8B00"></span>Java</div>
+                    <div class="pill"><span class="pill-dot" style="background:#3776AB"></span>Python</div>
+                    <div class="pill"><span class="pill-dot" style="background:#00599C"></span>C++</div>
+                    <div class="pill"><span class="pill-dot" style="background:#A8B9CC"></span>C</div>
+                    <div class="pill"><span class="pill-dot" style="background:#F7DF1E"></span>JavaScript</div>
+                    <div class="pill"><span class="pill-dot" style="background:#777BB4"></span>PHP</div>
+                </div>
+            </div>
+            <div class="stack-cat reveal">
+                <div class="cat-title"><span class="cat-icon">🛠️</span> Concepts &amp; Tools</div>
+                <div class="stack-pills">
+                    <div class="pill"><span class="pill-dot" style="background:#39d353"></span>DSA</div>
+                    <div class="pill"><span class="pill-dot" style="background:#4479A1"></span>DBMS</div>
+                    <div class="pill"><span class="pill-dot" style="background:#FF9900"></span>Cloud Computing</div>
+                    <div class="pill"><span class="pill-dot" style="background:#007ACC"></span>VS Code</div>
+                    <div class="pill"><span class="pill-dot" style="background:#FF6C37"></span>Postman</div>
+                    <div class="pill"><span class="pill-dot" style="background:#F05032"></span>Git / GitHub</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Skill Bars -->
+        <div class="skill-bars reveal">
+            <div class="skill-item-row">
+                <div class="skill-meta">
+                    <span class="t-comment">// </span><span class="skill-name">HTML5 / CSS3 / Animations</span>
+                    <span class="skill-lvl t-green">Confident</span>
+                </div>
+                <div class="skill-track"><div class="skill-fill-bar" data-w="90"></div></div>
+            </div>
+            <div class="skill-item-row">
+                <div class="skill-meta">
+                    <span class="t-comment">// </span><span class="skill-name">JavaScript / TypeScript</span>
+                    <span class="skill-lvl t-green">Confident</span>
+                </div>
+                <div class="skill-track"><div class="skill-fill-bar" data-w="82"></div></div>
+            </div>
+            <div class="skill-item-row">
+                <div class="skill-meta">
+                    <span class="t-comment">// </span><span class="skill-name">React / Next.js / Web Frameworks</span>
+                    <span class="skill-lvl t-yellow">Intermediate</span>
+                </div>
+                <div class="skill-track"><div class="skill-fill-bar" data-w="72"></div></div>
+            </div>
+            <div class="skill-item-row">
+                <div class="skill-meta">
+                    <span class="t-comment">// </span><span class="skill-name">UI/UX Design / Figma / Prototyping</span>
+                    <span class="skill-lvl t-yellow">Intermediate</span>
+                </div>
+                <div class="skill-track"><div class="skill-fill-bar" data-w="68"></div></div>
+            </div>
+            <div class="skill-item-row">
+                <div class="skill-meta">
+                    <span class="t-comment">// </span><span class="skill-name">Node.js / APIs / Databases</span>
+                    <span class="skill-lvl t-orange">Learning</span>
+                </div>
+                <div class="skill-track"><div class="skill-fill-bar" data-w="55"></div></div>
+            </div>
+            <div class="skill-item-row">
+                <div class="skill-meta">
+                    <span class="t-comment">// </span><span class="skill-name">DevOps / Docker / Cloud</span>
+                    <span class="skill-lvl t-orange">Exploring</span>
+                </div>
+                <div class="skill-track"><div class="skill-fill-bar" data-w="35"></div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== PROJECTS ===== -->
+    <section id="work">
+        <div class="section-label"><span class="t-num">03.</span> Featured Projects</div>
+        <h2 class="section-heading reveal">Things I've <span class="hl">built.</span></h2>
+        <div class="projects-list">
+
+            <!-- Project 1 — Course Progress Tracker -->
+            <div class="project-row reveal">
+                <div class="project-code-preview">
+                    <div class="code-preview-bar">
+                        <span class="tb-dot red"></span><span class="tb-dot yellow"></span><span class="tb-dot green"></span>
+                        <span class="cp-name">CourseTracker / dashboard.php</span>
+                    </div>
+                    <div class="code-preview-body">
+<pre><span class="t-comment">// Track user progress</span>
+<span class="t-red">function</span> <span class="t-blue">getProgress</span><span class="t-white">(</span><span class="t-red">$userId</span><span class="t-white">) {</span>
+  <span class="t-red">$q</span> <span class="t-white">=</span> <span class="t-orange">"SELECT completed,
+    total FROM progress
+    WHERE user_id = ?"</span><span class="t-white">;</span>
+  <span class="t-red">$res</span> <span class="t-white">=</span> <span class="t-blue">db_query</span><span class="t-white">(</span><span class="t-red">$q</span><span class="t-white">, [</span><span class="t-red">$userId</span><span class="t-white">]);</span>
+  <span class="t-purple">return</span> <span class="t-white">[</span>
+    <span class="t-orange">"pct"</span> <span class="t-white">=&gt;</span>
+    <span class="t-white">(</span><span class="t-red">$res</span><span class="t-white">[</span><span class="t-orange">"completed"</span><span class="t-white">] /
+    </span><span class="t-red">$res</span><span class="t-white">[</span><span class="t-orange">"total"</span><span class="t-white">]) * </span><span class="t-green">100</span>
+  <span class="t-white">];</span>
+<span class="t-white">}</span></pre>
+                    </div>
+                </div>
+                <div class="project-info">
+                    <div class="proj-label"><span class="t-num">01 —</span> Major Project (MCA)</div>
+                    <h3 class="proj-title">Course Progress Tracker</h3>
+                    <div class="proj-desc-card">
+                        <p>A full-featured educational platform with login system, progress tracking, quizzes, chatbot integration, admin dashboard, career guidance tree, and an embedded compiler.</p>
+                    </div>
+                    <div class="proj-tech">
+                        <span>HTML</span><span>CSS</span><span>JavaScript</span><span>PHP</span><span>MySQL</span>
+                    </div>
+                    <div class="proj-links">
+                        <a href="https://elegant-cannoli-ce0489.netlify.app/" target="_blank" class="proj-link-btn">↗ Live Demo</a>
+                        <a href="https://github.com/SuyashT0911" target="_blank" class="proj-link-btn ghost">⌥ GitHub</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 2 — Career Guidance Portal -->
+            <div class="project-row reverse reveal">
+                <div class="project-info">
+                    <div class="proj-label"><span class="t-num">02 —</span> College Project (BBA-CA)</div>
+                    <h3 class="proj-title">Career Guidance Portal</h3>
+                    <div class="proj-desc-card">
+                        <p>A structured web-based system helping students explore education and career paths visualised as an interactive tree. Clean UI, easy navigation, zero dependencies.</p>
+                    </div>
+                    <div class="proj-tech">
+                        <span>HTML</span><span>CSS</span><span>JavaScript</span>
+                    </div>
+                    <div class="proj-links">
+                        <a href="https://github.com/SuyashT0911" target="_blank" class="proj-link-btn">↗ GitHub</a>
+                    </div>
+                </div>
+                <div class="project-code-preview">
+                    <div class="code-preview-bar">
+                        <span class="tb-dot red"></span><span class="tb-dot yellow"></span><span class="tb-dot green"></span>
+                        <span class="cp-name">CareerPortal / tree.js</span>
+                    </div>
+                    <div class="code-preview-body">
+<pre><span class="t-comment">// Build career tree</span>
+<span class="t-purple">function</span> <span class="t-blue">buildTree</span><span class="t-white">(</span><span class="t-red">node</span><span class="t-white">) {</span>
+  <span class="t-purple">const</span> <span class="t-yellow">el</span> <span class="t-white">=</span>
+    document<span class="t-white">.</span><span class="t-blue">createElement</span><span class="t-white">(</span><span class="t-orange">"div"</span><span class="t-white">);</span>
+  <span class="t-yellow">el</span><span class="t-white">.</span>className <span class="t-white">=</span> <span class="t-orange">"tree-node"</span><span class="t-white">;</span>
+  <span class="t-yellow">el</span><span class="t-white">.</span>textContent <span class="t-white">=</span> <span class="t-red">node</span><span class="t-white">.</span>label<span class="t-white">;</span>
+  <span class="t-red">node</span><span class="t-white">.</span>children?.<span class="t-blue">forEach</span><span class="t-white">(</span>
+    <span class="t-red">c</span> <span class="t-white">=&gt;</span> <span class="t-yellow">el</span><span class="t-white">.</span><span class="t-blue">append</span><span class="t-white">(</span>
+      <span class="t-blue">buildTree</span><span class="t-white">(</span><span class="t-red">c</span><span class="t-white">)));</span>
+  <span class="t-purple">return</span> <span class="t-yellow">el</span><span class="t-white">;</span>
+<span class="t-white">}</span></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 3 — AI Research Paper -->
+            <div class="project-row reveal">
+                <div class="project-code-preview">
+                    <div class="code-preview-bar">
+                        <span class="tb-dot red"></span><span class="tb-dot yellow"></span><span class="tb-dot green"></span>
+                        <span class="cp-name">AI-Research / abstract.md</span>
+                    </div>
+                    <div class="code-preview-body">
+<pre><span class="t-comment"># AI-ML Research Paper</span>
+
+<span class="t-blue">Title</span><span class="t-white">:</span> <span class="t-orange">"The Future of AI-ML:
+  Trends, Challenges &amp;
+  Opportunities"</span>
+
+<span class="t-blue">Focus Areas</span><span class="t-white">:</span>
+  <span class="t-green">✓</span> Emerging AI trends
+  <span class="t-green">✓</span> Industry impact
+  <span class="t-green">✓</span> Ethical challenges
+  <span class="t-green">✓</span> Future opportunities
+
+<span class="t-blue">Status</span><span class="t-white">:</span> <span class="t-green">Published ✓</span></pre>
+                    </div>
+                </div>
+                <div class="project-info">
+                    <div class="proj-label"><span class="t-num">03 —</span> Research Work</div>
+                    <h3 class="proj-title">AI-ML Research Paper</h3>
+                    <div class="proj-desc-card">
+                        <p>Research paper on <em>"The Future of AI-ML: Trends, Challenges, and Opportunities"</em> — exploring emerging technologies, ethical implications, and industry impact of AI systems.</p>
+                    </div>
+                    <div class="proj-tech">
+                        <span>AI / ML</span><span>Research</span><span>Data Analysis</span>
+                    </div>
+                    <div class="proj-links">
+                        <a href="https://github.com/SuyashT0911" target="_blank" class="proj-link-btn">↗ View on GitHub</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- GitHub-style contribution graph -->
+        <div class="github-section reveal">
+            <div class="github-header">
+                <span class="t-comment">// contribution graph — last 12 months</span>
+                <span class="gh-count t-green">github.com/SuyashT0911</span>
+            </div>
+            <div class="contrib-grid" id="contrib-grid"></div>
+            <div class="contrib-legend">
+                <span>Less</span>
+                <span class="cl-box" style="background:#161b22"></span>
+                <span class="cl-box" style="background:#0e4429"></span>
+                <span class="cl-box" style="background:#006d32"></span>
+                <span class="cl-box" style="background:#26a641"></span>
+                <span class="cl-box" style="background:#39d353"></span>
+                <span>More</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== CONTACT ===== -->
+    <section id="contact">
+        <div class="section-label"><span class="t-num">04.</span> Contact</div>
+        <div class="contact-grid">
+            <div class="contact-left reveal">
+                <h2 class="section-heading">Let's <span class="hl">code</span> something great.</h2>
+                <p class="contact-p">Whether you have a project in mind, an open role, or just want to talk tech — I'm always up for a good conversation.</p>
+
+                <!-- Terminal contact card -->
+                <div class="terminal-window contact-terminal">
+                    <div class="terminal-bar">
+                        <span class="tb-dot red"></span>
+                        <span class="tb-dot yellow"></span>
+                        <span class="tb-dot green"></span>
+                        <span class="tb-title">bash</span>
+                    </div>
+                    <div class="terminal-body">
+                        <div class="t-line"><span class="t-prompt">~</span> <span class="t-cmd">ssh suyash@portfolio.dev</span></div>
+                        <div class="t-line t-success">Connected. ✓</div>
+                        <br>
+                        <div class="t-line"><span class="t-blue">email</span>    <span class="t-orange">tiwarisuyash700@gmail.com</span></div>
+                        <div class="t-line"><span class="t-blue">github</span>   <span class="t-orange">@SuyashT0911</span></div>
+                        <div class="t-line"><span class="t-blue">linkedin</span> <span class="t-orange">in/suyash-tiwari-11-2k3</span></div>
+                        <div class="t-line"><span class="t-blue">location</span> <span class="t-orange">Pune, Maharashtra 🇮🇳</span></div>
+                        <br>
+                        <div class="t-line"><span class="t-prompt">~</span> <span class="t-cursor-block">▋</span></div>
+                    </div>
+                </div>
+
+                <div class="contact-socials">
+                    <a href="https://github.com/SuyashT0911" target="_blank" class="social-icon-btn" id="gh-btn" aria-label="GitHub">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+                    </a>
+                    <a href="https://www.linkedin.com/in/suyash-tiwari-11-2k3/" target="_blank" class="social-icon-btn" id="li-btn" aria-label="LinkedIn">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                    </a>
+                    <a href="mailto:tiwarisuyash700@gmail.com" class="social-icon-btn" id="em-btn" aria-label="Email">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </a>
+                </div>
+            </div>
+
+            <form class="contact-form reveal" id="contact-form">
+                <div class="form-top-comment t-comment">// drop me a message...</div>
+                <div class="form-group">
+                    <label for="f-name"><span class="t-purple">const</span> <span class="t-blue">name</span> =</label>
+                    <input type="text" id="f-name" name="name" placeholder='"Your Name"' required>
+                </div>
+                <div class="form-group">
+                    <label for="f-email"><span class="t-purple">const</span> <span class="t-blue">email</span> =</label>
+                    <input type="email" id="f-email" name="email" placeholder='"your@email.com"' required>
+                </div>
+                <div class="form-group">
+                    <label for="f-subject"><span class="t-purple">const</span> <span class="t-blue">subject</span> =</label>
+                    <input type="text" id="f-subject" name="subject" placeholder='"Lets build something..."'>
+                </div>
+                <div class="form-group">
+                    <label for="f-msg"><span class="t-purple">const</span> <span class="t-blue">message</span> =</label>
+                    <textarea id="f-msg" name="message" rows="5" placeholder='"I want to discuss..."' required></textarea>
+                </div>
+                <button type="submit" class="btn-primary full-w" id="form-submit">
+                    <span>sendMessage()</span>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer id="footer">
+        <div class="footer-inner">
+            <span class="footer-logo"><span class="t-comment">// </span>Suyash Tiwari</span>
+            <span class="footer-copy t-comment">/* Designed &amp; coded with ❤️ — 2026 */</span>
+            <a href="#hero" class="footer-top" id="back-to-top" aria-label="Back to top">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
