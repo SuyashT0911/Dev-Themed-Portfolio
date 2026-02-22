@@ -408,6 +408,67 @@ document.addEventListener('DOMContentLoaded', sizeContribCells);
 
 
 /* ------------------------------------------
+   8c. CONTRIB GRAPH — Custom JS Scrollbar
+   (Works on iOS Safari + all mobile browsers)
+   ------------------------------------------ */
+(function initContribScrollbar() {
+    const wrapper = document.querySelector('.contrib-scroll-wrapper');
+    const thumb   = document.getElementById('contrib-thumb');
+    const hint    = document.getElementById('contrib-swipe-hint');
+    if (!wrapper || !thumb) return;
+
+    function updateThumb() {
+        const scrollWidth  = wrapper.scrollWidth;
+        const clientWidth  = wrapper.clientWidth;
+        const scrollLeft   = wrapper.scrollLeft;
+
+        if (scrollWidth <= clientWidth) {
+            // No overflow — show full-width thumb (graph fits on screen)
+            thumb.style.width = '100%';
+            thumb.style.left  = '0px';
+            return;
+        }
+
+        // Thumb width = proportion of visible area
+        const thumbWidthPct = clientWidth / scrollWidth;
+        // Thumb position = proportion scrolled
+        const thumbLeftPct  = scrollLeft / scrollWidth;
+
+        thumb.style.width = (thumbWidthPct * 100).toFixed(2) + '%';
+        thumb.style.left  = (thumbLeftPct  * 100).toFixed(2) + '%';
+    }
+
+    // Show swipe hint only on touch/narrow screens
+    function checkHint() {
+        if (hint && window.matchMedia('(hover: none), (max-width: 900px)').matches) {
+            if (wrapper.scrollWidth > wrapper.clientWidth) {
+                hint.style.display = 'block';
+            }
+        }
+    }
+
+    // Hide hint after first scroll
+    wrapper.addEventListener('scroll', () => {
+        updateThumb();
+        if (hint && !hint.classList.contains('hidden')) {
+            hint.classList.add('hidden');
+        }
+    }, { passive: true });
+
+    // Initial state
+    updateThumb();
+    checkHint();
+
+    // Re-run after data loads and on resize
+    window.addEventListener('resize', () => { updateThumb(); checkHint(); });
+    // Observe wrapper size changes (e.g. font loading shifts layout)
+    if (window.ResizeObserver) {
+        new ResizeObserver(updateThumb).observe(wrapper);
+    }
+})();
+
+
+/* ------------------------------------------
    9. TEXT SCRAMBLE ON NAV HOVER
    ------------------------------------------ */
 const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#{}[]<>';

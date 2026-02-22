@@ -1125,31 +1125,60 @@ section {
 .gh-count {
   font-size: 0.82rem;
 }
-/* Scrollable wrapper — handles overflow on all screen sizes */
+/* Scrollable wrapper — hide native scrollbar, use custom one below */
 .contrib-scroll-wrapper {
-  overflow-x: scroll;  /* always show scrollbar, not just on hover */
+  overflow-x: scroll;
   overflow-y: hidden;
-  padding-bottom: 10px;
-  /* Firefox custom scrollbar */
-  scrollbar-width: thin;
-  scrollbar-color: #39d353 #21262d;
+  /* Hide native scrollbar — we have a custom one */
+  scrollbar-width: none;         /* Firefox */
+  -ms-overflow-style: none;      /* IE/Edge */
+}
+.contrib-scroll-wrapper::-webkit-scrollbar {
+  display: none;                 /* Chrome, Safari, Opera */
 }
 
-/* WebKit custom scrollbar (Chrome, Edge, Safari) */
-.contrib-scroll-wrapper::-webkit-scrollbar {
+/* ── Custom cross-browser scrollbar ── */
+.contrib-scrollbar-track {
+  position: relative;
+  width: 100%;
   height: 6px;
-  border-radius: 100px;
-}
-.contrib-scroll-wrapper::-webkit-scrollbar-track {
   background: #21262d;
   border-radius: 100px;
+  margin-top: 10px;
+  overflow: hidden;
 }
-.contrib-scroll-wrapper::-webkit-scrollbar-thumb {
+.contrib-scrollbar-thumb {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
   background: linear-gradient(90deg, #39d353, #26a641);
   border-radius: 100px;
+  transition: background 0.2s ease;
+  min-width: 40px;
 }
-.contrib-scroll-wrapper::-webkit-scrollbar-thumb:hover {
+.contrib-scrollbar-thumb:hover,
+.contrib-scrollbar-thumb:active {
   background: linear-gradient(90deg, #4fe07a, #39d353);
+}
+
+/* ── Swipe hint (visible until user scrolls) ── */
+.contrib-swipe-hint {
+  display: none;           /* JS shows it only on touch/small screens */
+  text-align: center;
+  margin-top: 8px;
+  opacity: 1;
+  transition: opacity 0.5s ease;
+}
+.contrib-swipe-hint.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+.contrib-swipe-hint span {
+  font-family: var(--font-code);
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  letter-spacing: 0.04em;
 }
 
 .contrib-grid {
