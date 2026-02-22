@@ -238,38 +238,106 @@ document.querySelectorAll('.skill-fill-bar').forEach(bar => {
 
 
 /* ------------------------------------------
-   8. GITHUB CONTRIBUTION GRAPH — Generated
+   8. GITHUB CONTRIBUTION GRAPH — Real Data
    ------------------------------------------ */
 const grid = document.getElementById('contrib-grid');
 if (grid) {
-    const DAYS  = 52 * 7; // 364 days
-    const LEVELS = [
-        '#161b22', // 0 contributions
-        '#0e4429',
-        '#006d32',
-        '#26a641',
-        '#39d353',
-    ];
-    // Weighted random: mostly empty, some activity
-    const weights = [55, 15, 12, 10, 8];
-    function weightedRandom() {
-        const total = weights.reduce((a, b) => a + b, 0);
-        let rand = Math.random() * total;
-        for (let i = 0; i < weights.length; i++) {
-            rand -= weights[i];
-            if (rand <= 0) return i;
+    const GITHUB_USERNAME = 'SuyashT0911';
+    const LEVELS = ['#161b22', '#0e4429', '#006d32', '#26a641', '#39d353'];
+
+    function getContribLevel(count) {
+        if (count === 0) return 0;
+        if (count <= 2)  return 1;
+        if (count <= 5)  return 2;
+        if (count <= 9)  return 3;
+        return 4;
+    }
+
+    function renderGraph(weeks) {
+        grid.innerHTML = '';
+        // Pad to always show 52 full weeks
+        const allDays = [];
+        weeks.forEach(week => week.contributionDays.forEach(day => allDays.push(day)));
+
+        allDays.forEach(day => {
+            const el = document.createElement('div');
+            el.classList.add('contrib-day');
+            const lvl = getContribLevel(day.contributionCount);
+            el.style.background = LEVELS[lvl];
+            const dateStr = new Date(day.date).toLocaleDateString('en-IN', {
+                day: 'numeric', month: 'short', year: 'numeric'
+            });
+            el.title = `${day.contributionCount} contribution${day.contributionCount !== 1 ? 's' : ''} on ${dateStr}`;
+            grid.appendChild(el);
+        });
+
+        // Update the count label if it exists
+        const countEl = document.querySelector('.gh-count');
+        if (countEl) {
+            const total = allDays.reduce((sum, d) => sum + d.contributionCount, 0);
+            countEl.textContent = `${total} contributions in the last year`;
         }
-        return 0;
     }
-    for (let d = 0; d < DAYS; d++) {
-        const el   = document.createElement('div');
-        el.classList.add('contrib-day');
-        const lvl  = weightedRandom();
-        el.style.background = LEVELS[lvl];
-        const contribs = [0, 1, 3, 6, 10];
-        el.title = `${contribs[lvl] + Math.floor(Math.random() * 2)} contributions`;
-        grid.appendChild(el);
+
+    function renderFallback() {
+        grid.innerHTML = '';
+        const weights = [55, 15, 12, 10, 8];
+        function weightedRandom() {
+            const total = weights.reduce((a, b) => a + b, 0);
+            let rand = Math.random() * total;
+            for (let i = 0; i < weights.length; i++) { rand -= weights[i]; if (rand <= 0) return i; }
+            return 0;
+        }
+        for (let d = 0; d < 364; d++) {
+            const el = document.createElement('div');
+            el.classList.add('contrib-day');
+            const lvl = weightedRandom();
+            el.style.background = LEVELS[lvl];
+            el.title = 'Contribution data unavailable';
+            grid.appendChild(el);
+        }
     }
+
+    async function fetchContributions() {
+        try {
+            // Use github-contributions-api (free, no token needed)
+            const res = await fetch(
+                `https://github-contributions-api.jogruber.de/v4/${GITHUB_USERNAME}?y=last`
+            );
+            if (!res.ok) throw new Error('API error');
+            const data = await res.json();
+
+            // This API returns { total: {...}, contributions: [{date, count, level}] }
+            if (data.contributions && data.contributions.length > 0) {
+                grid.innerHTML = '';
+                data.contributions.forEach(day => {
+                    const el = document.createElement('div');
+                    el.classList.add('contrib-day');
+                    el.style.background = LEVELS[Math.min(day.level, 4)];
+                    const dateStr = new Date(day.date).toLocaleDateString('en-IN', {
+                        day: 'numeric', month: 'short', year: 'numeric'
+                    });
+                    el.title = `${day.count} contribution${day.count !== 1 ? 's' : ''} on ${dateStr}`;
+                    grid.appendChild(el);
+                });
+
+                // Update total count
+                const countEl = document.querySelector('.gh-count');
+                if (countEl) {
+                    const total = data.contributions.reduce((sum, d) => sum + d.count, 0);
+                    countEl.textContent = `${total} contributions in the last year · github.com/${GITHUB_USERNAME}`;
+                }
+            } else {
+                renderFallback();
+            }
+        } catch (err) {
+            console.warn('GitHub contributions API failed, using fallback.', err);
+            renderFallback();
+        }
+    }
+
+    // Fetch real contributions
+    fetchContributions();
 }
 
 
