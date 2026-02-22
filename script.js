@@ -557,19 +557,35 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
 
 
 /* ------------------------------------------
-   12. CONTACT FORM FEEDBACK
+   12. CONTACT FORM FEEDBACK & MAIL OUT
    ------------------------------------------ */
 const form      = document.getElementById('contact-form');
 const submitBtn = document.getElementById('form-submit');
 if (form) {
     form.addEventListener('submit', e => {
         e.preventDefault();
+        
+        // 1. Get form values
+        const name    = document.getElementById('f-name').value.trim();
+        const email   = document.getElementById('f-email').value.trim();
+        const subject = document.getElementById('f-subject').value.trim() || 'Portfolio Contact';
+        const msg     = document.getElementById('f-msg').value.trim();
+        
+        // 2. Build the mailto link
+        const bodyContent = `Name: ${name}\nEmail: ${email}\n\nMessage:\n${msg}`;
+        const mailtoURL   = `mailto:tiwarisuyash700@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyContent)}`;
+        
+        // 3. Open email client
+        window.location.href = mailtoURL;
+
+        // 4. Play success UI animation
         const span = submitBtn.querySelector('span');
         const orig = span.textContent;
         submitBtn.disabled = true;
-        span.textContent   = 'sending()...';
+        span.textContent   = 'opening_client()...';
+        
         setTimeout(() => {
-            span.textContent            = '✓ message.sent()';
+            span.textContent            = '✓ message.ready()';
             submitBtn.style.background  = '#4fe07a';
             setTimeout(() => {
                 span.textContent           = orig;
@@ -577,7 +593,7 @@ if (form) {
                 submitBtn.style.background = '';
                 form.reset();
             }, 3000);
-        }, 1200);
+        }, 1500);
     });
 }
 
