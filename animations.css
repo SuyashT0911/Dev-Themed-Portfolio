@@ -47,8 +47,9 @@
 .project-row:nth-child(3) { transition-delay: 0.2s; }
 
 /* Contribution graph fade-in */
-.contrib-day {
-    animation: contribFade 0.01s ease backwards;
+@keyframes contribFade {
+    from { opacity: 0; transform: scale(0.8); }
+    to   { opacity: 1; transform: scale(1); }
 }
 
 /* Form label cursor */
@@ -106,7 +107,11 @@
 @keyframes tLineIn { to { opacity: 1; } }
 
 /* GitHub contribution graph animate in */
+@keyframes gridIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
 #contrib-grid .contrib-day {
-    opacity: 0;
-    animation: gridIn 0.01s ease forwards;
+    opacity: 1;
+    animation: contribFade 0.3s ease forwards;
 }

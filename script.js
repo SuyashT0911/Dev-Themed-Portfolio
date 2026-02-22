@@ -243,7 +243,7 @@ document.querySelectorAll('.skill-fill-bar').forEach(bar => {
 const grid = document.getElementById('contrib-grid');
 if (grid) {
     const GITHUB_USERNAME = 'SuyashT0911';
-    const LEVELS = ['#161b22', '#0e4429', '#006d32', '#26a641', '#39d353'];
+    const LEVELS = ['#21262d', '#0e4429', '#006d32', '#26a641', '#39d353'];
 
     function getContribLevel(count) {
         if (count === 0) return 0;
